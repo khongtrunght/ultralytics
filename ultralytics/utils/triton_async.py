@@ -58,8 +58,8 @@ class AsyncTritonRemoteModel:
             )
 
         else:
-            import tritonclient.grpc.aio as client  # noqa
-            import tritonclient.grpc as async_client  # noqa
+            import tritonclient.grpc as client  # noqa
+            import tritonclient.grpc.aio as async_client  # noqa
 
             self.triton_client = client.InferenceServerClient(
                 url=self.url, verbose=False, ssl=False
