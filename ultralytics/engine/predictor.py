@@ -361,7 +361,7 @@ class BasePredictor:
 
                 # Inference
                 with profilers[1]:
-                    preds = await self.inference(im, *args, **kwargs)
+                    preds = await self.async_inference(im, *args, **kwargs)
                     if self.args.embed:
                         if isinstance(preds, torch.Tensor):
                             yield preds
