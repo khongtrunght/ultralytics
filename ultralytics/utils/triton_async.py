@@ -155,7 +155,7 @@ class AsyncTritonRemoteModel:
             self.AsyncInferRequestedOutput(output_name)
             for output_name in self.output_names
         ]
-        outputs = await self.triton_client.infer(
+        outputs = await self.triton_client_async.infer(
             model_name=self.endpoint, inputs=infer_inputs, outputs=infer_outputs
         )
 
