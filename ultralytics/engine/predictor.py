@@ -322,7 +322,7 @@ class BasePredictor:
         self.run_callbacks("on_predict_end")
 
     @smart_inference_mode()
-    async def async_stream_inference(self, source=None, model=None, *args, **kwargs):
+    async def async_inference(self, source=None, model=None, *args, **kwargs):
         """Streams real-time inference on camera feed and saves results to file."""
         if self.args.verbose:
             LOGGER.info("")
@@ -363,7 +363,11 @@ class BasePredictor:
                 with profilers[1]:
                     preds = await self.inference(im, *args, **kwargs)
                     if self.args.embed:
-                        yield from [preds] if isinstance(preds, torch.Tensor) else preds  # yield embedding tensors
+                        if isinstance(preds, torch.Tensor):
+                            yield preds
+                        else:
+                            async for pred in preds:
+                                yield pred
                         continue
 
                 # Postprocess
@@ -388,7 +392,8 @@ class BasePredictor:
                     LOGGER.info("\n".join(s))
 
                 self.run_callbacks("on_predict_batch_end")
-                yield from self.results
+                async for result in self.results:
+                    yield result
 
         # Release assets
         for v in self.vid_writer.values():
