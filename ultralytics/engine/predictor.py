@@ -186,9 +186,9 @@ class BasePredictor:
         """Performs inference on an image or stream asynchronously."""
         self.stream = stream
         if stream:
-            return await self.stream_inference(source, model, *args, **kwargs)
+            return await self.async_stream_inference(source, model, *args, **kwargs)
         else:
-            return list(await self.stream_inference(source, model, *args, **kwargs))
+            return list(await self.async_stream_inference(source, model, *args, **kwargs))
 
     def predict_cli(self, source=None, model=None):
         """
@@ -322,7 +322,7 @@ class BasePredictor:
         self.run_callbacks("on_predict_end")
 
     @smart_inference_mode()
-    async def async_inference(self, source=None, model=None, *args, **kwargs):
+    async def async_stream_inference(self, source=None, model=None, *args, **kwargs):
         """Streams real-time inference on camera feed and saves results to file."""
         if self.args.verbose:
             LOGGER.info("")
