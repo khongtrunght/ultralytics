@@ -392,7 +392,7 @@ class BasePredictor:
                     LOGGER.info("\n".join(s))
 
                 self.run_callbacks("on_predict_batch_end")
-                async for result in self.results:
+                for result in self.results:
                     yield result
 
         # Release assets
