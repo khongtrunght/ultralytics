@@ -186,9 +186,9 @@ class BasePredictor:
         """Performs inference on an image or stream asynchronously."""
         self.stream = stream
         if stream:
-            return await self.async_stream_inference(source, model, *args, **kwargs)
+            return self.async_stream_inference(source, model, *args, **kwargs)
         else:
-            return list(await self.async_stream_inference(source, model, *args, **kwargs))
+            return [item async for item in self.async_stream_inference(source, model, *args, **kwargs)]
 
     def predict_cli(self, source=None, model=None):
         """
